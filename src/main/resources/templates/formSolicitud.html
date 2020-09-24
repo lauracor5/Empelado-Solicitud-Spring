@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout:: head "></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	<div class="container py-4">
+		<div class="card bg-dark text-white">
+			<div class="card-header" th:text="${titulo}"></div>
+			<div class="card-body">
+
+				<div th:object="${solicitud}" th:remove="tag">
+					<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+						<li th:each="err: ${#fields.errors('*')}" th:text="${err}"></li>
+					</ul>
+				</div>
+				<form th:action="@{/formSolicitud}" th:object="${solicitud}"
+					method="post">
+
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Código</label>
+						<div class="col-sm-6">
+							<input type="text" th:field="*{codigo}" class="form-control"
+								th:errorclass="'form-control alert-danger'" /> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Descripción</label>
+						<div class="col-sm-6">
+							<input type="text" th:field="*{descripcion}" class="form-control"
+								th:errorclass="'form-control alert-danger'" /> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></small>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Resumen</label>
+						<div class="col-sm-6">
+							<textarea th:field="*{resumen}" class="form-control"></textarea>
+								
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Empleado</label>
+						<div class="col-sm-6">
+						<select th:field="${solicitud.empleado}" >
+								<option th:each="empleado :${empleados}" th:value="${empleado.idEmpleado}" th:text="${empleado.nombre}">
+						</select>
+						
+						</div>
+					</div>
+						
+					<div class="form-group row">
+						<div class="col-sm-6">
+							<input type="submit" value="Crear Solicitud"
+								class="btn btn-secondary">
+						</div>
+					</div>
+
+				</form>
+
+
+			</div>
+		</div>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+
+</body>
+</html>
